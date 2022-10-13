@@ -1,18 +1,18 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
 use Exception;
+use Livewire\Livewire;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Livewire\Component;
 
 /**
  * Single column in datatable columns list.
  * @author Emanuele Fornasier <emanuele@atrio.it>
  */
-class Column extends Component
+class Column
 {
     protected $heading;
     public $attribute;
@@ -47,16 +47,44 @@ class Column extends Component
 
 
     /**
+     * Callback to be used to live edit the column.
+     */
+    protected $editableCallback = null;
+
+    /**
+     * input to be rendered when the column is set as editable
+     * @var string textarea|input
+     */
+    protected $editableInput = null;
+
+
+    /**
      * Flag to show the column in ordering mode
      */
     protected $showInOrderList = false;
 
 
     /**
+     * Flag to detect ordering mode
+     */
+    protected $orderingMode = false;
+
+
+    /**
+     * Static utility for constructor
+     */
+    public static function make(string $attribute = null, array $config = [])
+    {
+        $column = new static($attribute, $config);
+
+        return $column;
+    }
+
+    /**
      * @param string $attribute column name and model attribute
      * @param array $config extra parameters for specific column types
      */
-    public function __construct(string $attribute = null, array $config = [])
+    final public function __construct(string $attribute = null, array $config = [])
     {
         $this->attribute = $attribute;
         $this->config = $config;
@@ -237,9 +265,44 @@ class Column extends Component
 
 
     /**
+     * Sets the column as editable and stores a callback to be used to update
+     * the model.
+     * @param callable $editableCallback closure to be used to update the model
+     * @param string $inputType input|textarea
+     */
+    public function editable(callable $editableCallback, string $inputType = 'input')
+    {
+        $this->editableCallback = $editableCallback;
+
+        $this->editableInput = $inputType;
+
+        return $this;
+    }
+
+
+    /**
+     * Execute the callback when column is edited.
+     */
+    public function edit(Model $model, $value)
+    {
+        return call_user_func($this->editableCallback, $model, $value);
+    }
+
+
+    /**
+     * Defines if ordering mode is active on parent table.
+     */
+    public function setOrderingMode(bool $flag): self
+    {
+        $this->orderingMode = $flag;
+
+        return $this;
+    }
+
+    /**
      * Return value from model, using formatting logic.
      */
-    public function render(Model $model, $functionCode = null)
+    public function output(Model $model, $functionCode = null)
     {
         // default order logic on attribute
         if (!$this->formatCallback) {
@@ -249,10 +312,17 @@ class Column extends Component
         }
 
         if ($this->editLink === true) {
-            return '<a href="'.route($functionCode.'.update', [$model->getAttribute('id')]).'">'.$content.'</a>';
+            $content = '<a href="'.route($functionCode.'.update', [$model->getAttribute('id')]).'">'.$content.'</a>';
         }
 
-        return $content;
+        // ritorno componente livewire
+        return Livewire::mount('leasytable::standard_column_widget', [
+            'content' => $content,
+            'editable' => $this->orderingMode === false && $this->editableCallback !== null,
+            'editableInput' => $this->editableInput,
+            'attribute' => $this->attribute,
+            'model' => $model,
+        ])->html();
     }
 
 

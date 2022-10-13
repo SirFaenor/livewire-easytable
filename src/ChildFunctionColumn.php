@@ -1,9 +1,10 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Column to link list of a child function.
@@ -16,16 +17,19 @@ class ChildFunctionColumn extends Column
     /**
      * Render link to child function
      */
-    public function render(Model $model, $functionCode = null)
+    public function output(Model $model, $functionCode = null)
     {
-        $link = route($this->attribute.'.list', ["parent_id" => $model->id, "parent_code" => $functionCode]);
+        if ($this->attribute === null) {
+            throw new Exception("Missing attribute on column");
+        }
+        $link = route($this->attribute.'.list', ["parent_id" => $model->getAttribute('id'), "parent_code" => $functionCode]);
 
         /**
          * presuppone esistenza,nel modello, di una relazione nominata come $config["name] al plurale
          * (se "name" è "product" la relazione sottointesa sarà "products")
          */
         $relationName = Str::plural($this->attribute);
-        $count = $model->$relationName ? '('.count($this->model->$relationName).')' : '';
+        $count = $model->$relationName ? '('.count($model->$relationName).')' : '';
 
         /**
          * Sovrascrittura count da fuori

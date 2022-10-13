@@ -1,6 +1,6 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Livewire;
@@ -38,7 +38,7 @@ class SwitchColumn extends Column
     /**
      * Return publication widget (livewire component)
      */
-    public function render(Model $model, $functionCode = null)
+    public function output(Model $model, $functionCode = null)
     {
         // ritorno componente livewire
         return Livewire::mount('leasytable::switch_column_widget', [

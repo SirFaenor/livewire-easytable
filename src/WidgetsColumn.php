@@ -1,6 +1,6 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +13,13 @@ class WidgetsColumn extends Column
 
     protected $classes = 'tools no-sort widgets';
 
+
     /**
      * Return publication widget (livewire component)
      */
-    public function render(Model $model, $functionCode = null)
+    public function output(Model $model, $functionCode = null)
     {
-        $link = route('widget.list', ["parent_id" => $model->id, "parent_code" => $functionCode]);
+        $link = route('widget.list', ["parent_id" => $model->getAttribute('id'), "parent_code" => $functionCode]);
 
         $count = $model->widgets ? '('.count($model->widgets->where('public', '<>', 'P')).')' : '';
 

@@ -64,7 +64,7 @@
                 <tr>
                     @foreach($columns as $column)
                     <td class="{{ $column->classes }}">
-                        {!! $column->render($item, $functionCode) !!}
+                        {!! $column->output($item, $functionCode, $orderingMode) !!}
                     </td>
                     @endforeach
                 </tr>
@@ -93,7 +93,7 @@
                 <div class="uk-flex uk-flex-middle">
                     <i class="mvi mvi-grid"></i>
                     @foreach(array_filter($columns, fn($column) => $column->showInOrderList === true) as $column)
-                    <span class="uk-margin-left">{!! $column->render($item, $functionCode) !!}</span>
+                    <span class="uk-margin-left">{!! $column->setOrderingMode(true)->output($item, $functionCode) !!}</span>
                     @endforeach
                 </div>
             </li>

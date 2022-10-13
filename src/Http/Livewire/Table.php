@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Sirfaenor\Leasytable\Http\Livewire;
 
+use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Sirfaenor\Leasytable\Column;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Sirfaenor\Leasytable\Http\Livewire\Column;
 
 /**
  * Livewire datatable
@@ -21,15 +23,14 @@ abstract class Table extends Component
     use WithPagination;
 
     /**
-     * @var array list of collected ids that are going to be exported
+     * @var Builder base eloquent query binded to this table
      */
-    public $collected = [];
-
+    protected $query = null;
 
     /**
      * Events listening
      */
-    protected $listeners = ['orderingModeToggle', 'updatePositions', 'refresh' => '$refresh'];
+    protected $listeners = ['orderingModeToggle', 'updatePositions', 'refresh' => '$refresh', 'columnEdited'];
 
 
     /**
@@ -84,12 +85,6 @@ abstract class Table extends Component
 
 
     /**
-     * Current season
-     */
-    public $seasonId;
-
-
-    /**
      * List of available mappings for export
      */
     public $mappingList;
@@ -103,8 +98,9 @@ abstract class Table extends Component
 
     /**
      * Page size
+     * Default is loaded from config "leasytable.pagesize"
      */
-    public $pageSize = 200;
+    public $pageSize;
 
 
     /**
@@ -138,6 +134,7 @@ abstract class Table extends Component
     {
         $this->totalRowsCount = count($this->loadRows(false));
 
+        $this->pageSize = $this->pageSize ?: config('leasytable.pagesize');
 
         /**
          * Restore state from session
@@ -230,8 +227,17 @@ abstract class Table extends Component
     {
         return [
 
-            (new Column('title'))->heading('Titolo')->formatUsing(fn ($item) => $item->current_lang->title)->classes('uk-text-nowrap'),
-
+            Column::make('id')
+                ->heading('ID')
+                ->sortable(fn (Builder $query, string $direction) => $query->orderBy('id', $direction))
+                ->classes('uk-text-nowrap'),
+            Column::make('title')
+                ->heading('Titolo')
+                ->formatUsing(fn ($item) => $item->current_lang->title)
+                ->sortable(function (Builder $query, string $direction) {
+                    // your custom sorting condition
+                })
+                ->classes('uk-text-nowrap'),
         ];
     }
 
@@ -369,11 +375,6 @@ abstract class Table extends Component
         // store search state
         $this->state['search'] = $value;
 
-        // reset component when search is cleared
-        if (!strlen($this->search)) {
-            $this->mount();
-        }
-
         // save state
         $this->saveState('updatedSearch');
     }
@@ -502,5 +503,18 @@ abstract class Table extends Component
          * return ! array_key_exists('category', $this->activeFilters) ? 'Seleziona una categoria' : '';
          */
         return '';
+    }
+
+
+    /**
+     * Listen for change on an "editable" column
+     */
+    public function columnEdited($attribute, $value, int $modelId)
+    {
+        $column = $this->getColumnByAttribute($attribute);
+
+        $model = $this->query()->getModel()->findOrFail($modelId);
+
+        return $column->edit($model, $value);
     }
 }

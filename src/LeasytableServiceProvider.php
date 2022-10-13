@@ -2,7 +2,14 @@
 
 namespace Sirfaenor\Leasytable;
 
+use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
+use Sirfaenor\Leasytable\Http\Livewire\CopyColumnWidget;
+use Sirfaenor\Leasytable\Http\Livewire\DeleteColumnWidget;
+use Sirfaenor\Leasytable\Http\Livewire\SwitchColumnWidget;
+use Sirfaenor\Leasytable\Http\Livewire\PublicationColumnWidget;
+use Sirfaenor\Leasytable\Http\Livewire\StandardColumnWidget;
+use Sirfaenor\Leasytable\Http\Livewire\Table;
 
 class LeasytableServiceProvider extends ServiceProvider
 {
@@ -53,6 +60,12 @@ class LeasytableServiceProvider extends ServiceProvider
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'leasytable');
 
-        // register components
+        // register columns
+        Livewire::component('leasytable::publication_column_widget', PublicationColumnWidget::class);
+        Livewire::component('leasytable::delete_column_widget', DeleteColumnWidget::class);
+        Livewire::component('leasytable::switch_column_widget', SwitchColumnWidget::class);
+        Livewire::component('leasytable::copy_column_widget', CopyColumnWidget::class);
+        Livewire::component('leasytable::standard_column_widget', StandardColumnWidget::class);
+        Livewire::component('leasytable::table', Table::class);
     }
 }

@@ -1,3 +1,6 @@
 <?php
 
-return [];
+return [
+    // default pagesize for table
+    'pagesize' => 100,
+];

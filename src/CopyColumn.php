@@ -1,6 +1,6 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Livewire;
@@ -14,7 +14,11 @@ class CopyColumn extends Column
 
     protected $classes = 'tools copy';
 
-    public function render(Model $model, $functionCode = null)
+
+    /**
+     * Return copy comuns widget (livewire)
+     */
+    public function output(Model $model, $functionCode = null)
     {
         // ritorno componente livewire
         return Livewire::mount('leasytable::copy_column_widget', [

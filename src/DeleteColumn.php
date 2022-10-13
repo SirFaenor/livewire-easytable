@@ -1,6 +1,6 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Livewire;
@@ -15,9 +15,9 @@ class DeleteColumn extends Column
     protected $classes = 'tools delete';
 
     /**
-     * Return edit widget (livewire component)
+     * Return delete widget (livewire component)
      */
-    public function render(Model $model, $functionCode = null)
+    public function output(Model $model, $functionCode = null)
     {
         // ritorno componente livewire
         return Livewire::mount('leasytable::delete_column_widget', [

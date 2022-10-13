@@ -1,6 +1,6 @@
 <?php
 
-namespace Sirfaenor\Leasytable\Http\Livewire;
+namespace Sirfaenor\Leasytable;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +14,7 @@ class EditColumn extends Column
     protected $classes = 'tools  edit';
 
 
-    public function render(Model $model, $functionCode = null)
+    public function output(Model $model, $functionCode = null)
     {
         $link = route($functionCode.'.update', ["id" => $model["id"]]);
 
