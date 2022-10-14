@@ -7,7 +7,6 @@ use Illuminate\Support\ServiceProvider;
 use Sirfaenor\Leasytable\Http\Livewire\CopyColumnWidget;
 use Sirfaenor\Leasytable\Http\Livewire\DeleteColumnWidget;
 use Sirfaenor\Leasytable\Http\Livewire\SwitchColumnWidget;
-use Sirfaenor\Leasytable\Http\Livewire\PublicationColumnWidget;
 use Sirfaenor\Leasytable\Http\Livewire\StandardColumnWidget;
 use Sirfaenor\Leasytable\Http\Livewire\Table;
 
@@ -21,7 +20,7 @@ class LeasytableServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-deployment');
+        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'leasytable');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'leasytable');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // routes
@@ -33,18 +32,23 @@ class LeasytableServiceProvider extends ServiceProvider
 
 
             // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-deployment'),
-            ], 'views');*/
+            $this->publishes([
+                __DIR__.'/../resources/views' => resource_path('views/vendor/leasytable'),
+            ], 'leasytable-views');
+
+            // Publishing the config.
+            $this->publishes([
+                __DIR__.'/../config/config.php' => config_path('leasytable.php'),
+            ], 'leasytable-config');
 
             // Publishing assets.
             /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/laravel-deployment'),
+                __DIR__.'/../resources/assets' => public_path('vendor/leasytable'),
             ], 'assets');*/
 
             // Publishing the translation files.
             /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-deployment'),
+                __DIR__.'/../resources/lang' => resource_path('lang/vendor/leasytable'),
             ], 'lang');*/
 
             // Registering package commands.
