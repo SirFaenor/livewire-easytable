@@ -61,7 +61,6 @@ class LeasytableServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'leasytable');
 
         // register columns
-        Livewire::component('leasytable::publication_column_widget', PublicationColumnWidget::class);
         Livewire::component('leasytable::delete_column_widget', DeleteColumnWidget::class);
         Livewire::component('leasytable::switch_column_widget', SwitchColumnWidget::class);
         Livewire::component('leasytable::copy_column_widget', CopyColumnWidget::class);

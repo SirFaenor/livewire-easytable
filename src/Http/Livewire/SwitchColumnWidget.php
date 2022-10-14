@@ -5,7 +5,7 @@ namespace Sirfaenor\Leasytable\Http\Livewire;
 use Livewire\Component;
 
 /**
- * Livewire component to render a publication widget
+ * Livewire component to render an "emun [Y,N]" field toggler
  */
 class SwitchColumnWidget extends Component
 {

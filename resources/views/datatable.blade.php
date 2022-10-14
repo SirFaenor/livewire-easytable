@@ -109,4 +109,5 @@
 
     @endif {{-- ordering mode --}}
 
+    @include('leasytable::style')
 </div>

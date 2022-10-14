@@ -52,18 +52,18 @@ class StandardColumnWidget extends Component
 
     public function render()
     {
-        // if there's a callback, the column is live editable
+        // setup input field if the column is live editable
         if ($this->editable === true) {
             switch ($this->editableInput) {
                 case 'input':
 
-                    $this->content = '<input class="uk-input" type="text" wire:model.lazy="value" value="'.$this->content.'" /></span>';
+                    $this->content = '<input wire:loading.delay.attr="disabled" wire:loading.delay.class="loading" class="uk-input" type="text" wire:model.lazy="value" value="'.$this->content.'" /></span>';
 
                     break;
 
                 case 'textarea':
 
-                    $this->content = '<textarea rows="5" class="uk-textarea" wire:model.lazy="value">'.$this->content.'</textarea>';
+                    $this->content = '<textarea wire:loading.delay.attr="disabled" wire:loading.delay.class="loading" rows="5" class="uk-textarea" wire:model.lazy="value">'.$this->content.'</textarea>';
 
                     break;
 
@@ -75,13 +75,13 @@ class StandardColumnWidget extends Component
             }
         }
 
-        return '<span>'.$this->content.'</span>';
+        return view('leasytable::columns.standard');
     }
 
     /**
      * When value is updated, emit event to parent component.
      * A callback cannot be stored as public property, so we must
-     * forward call to parent that will get the callback from columns configuration.
+     * forward call to parent that will retrieve the callback from columns configuration.
      */
     public function updatedValue()
     {
