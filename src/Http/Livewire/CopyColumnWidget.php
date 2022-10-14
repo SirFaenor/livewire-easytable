@@ -3,8 +3,6 @@
 namespace Sirfaenor\Leasytable\Http\Livewire;
 
 use Livewire\Component;
-use AtrioTeam\Marvin\App\Functions\Base\HandlerCopyInterface;
-use AtrioTeam\Marvin\App\Functions\Base\HandlerDeleteInterface;
 
 /**
  * Livewire component to render a copy widget on a row.
@@ -13,9 +11,9 @@ class CopyColumnWidget extends Component
 {
     public $model;
 
-    public $functionCode;
-
     public $heading;
+
+    public $attribute;
 
     public function render()
     {
@@ -29,40 +27,14 @@ class CopyColumnWidget extends Component
 
 
     /**
-     * Execute copy
+     * Execute copying.
+     * When button is clicked, emit event to parent component.
+     * A callback cannot be stored as public property of a livewire component, so we must
+     * forward call to parent that will retrieve the callback from columns configuration.
      */
     public function copy()
     {
-        $Handler = app()->make(HandlerCopyInterface::class, [
-            'function_code' => $this->functionCode
-        ]);
-
-        $model = $this->model;
-
-
-        /**
-         * Copia record principale
-         */
-        $newModel = $Handler->copyItem($model);
-
-
-        /**
-         * Copia dei record lingua
-         */
-        $langs = $Handler->copyItemLangs($model, $newModel, []);
-
-
-        /**
-         * Copia gallery
-         */
-        $galleries = $Handler->copyGalleries($model, $newModel);
-
-        /**
-         * Copia widgets
-         */
-        $widgets = $Handler->copyWidgets($model, $newModel);
-
-        // refresh parent table
-        $this->emitUp('refresh');
+        // get stored callback and execute it
+        $this->emitUp('columnCopying', $this->attribute, $this->model->getAttribute('id'));
     }
 }

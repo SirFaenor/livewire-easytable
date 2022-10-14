@@ -30,7 +30,14 @@ abstract class Table extends Component
     /**
      * Events listening
      */
-    protected $listeners = ['orderingModeToggle', 'updatePositions', 'refresh' => '$refresh', 'columnEdited'];
+    protected $listeners = [
+        'orderingModeToggle',
+        'updatePositions',
+        'refresh' => '$refresh',
+        'columnEdited',
+        'columnCopying',
+        'columnDeleting',
+    ];
 
 
     /**
@@ -294,7 +301,7 @@ abstract class Table extends Component
     /**
      * Get specific column from attribute names
      */
-    protected function getColumnByAttribute($attribute): ?Column
+    protected function getColumnByAttribute(string $attribute): ?Column
     {
         $filtered = array_filter($this->columns(), fn (Column $column) => $column->attribute === $attribute);
 
@@ -516,5 +523,42 @@ abstract class Table extends Component
         $model = $this->query()->getModel()->findOrFail($modelId);
 
         return $column->edit($model, $value);
+    }
+
+
+    /**
+     * Listen for a click on "copy" button widget.
+     * Event is emitted from Livewire/CopyColumnWidget
+     */
+    public function columnCopying($attribute, int $modelId)
+    {
+        /**
+         * @var \Sirfaenor\Leasytable\CopyColumn
+         */
+        $column = $this->getColumnByAttribute($attribute);
+
+        $model = $this->query()->getModel()->findOrFail($modelId);
+
+        call_user_func($column->getCopyCallback(), $model, $column->config);
+
+        $this->emit('refresh');
+    }
+
+    /**
+     * Listen for a click on "delete" button widget.
+     * Event is emitted from Livewire/CopyColumnWidget
+     */
+    public function columnDeleting($attribute, int $modelId)
+    {
+        /**
+         * @var \Sirfaenor\Leasytable\DeleteColumn
+         */
+        $column = $this->getColumnByAttribute($attribute);
+
+        $model = $this->query()->getModel()->findOrFail($modelId);
+
+        call_user_func($column->getDeleteCallback(), $model, $column->config);
+
+        $this->emit('refresh');
     }
 }

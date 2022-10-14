@@ -14,6 +14,8 @@ class DeleteColumnWidget extends Component
 
     public $functionCode;
 
+    public $attribute;
+
     public function render()
     {
         return '<div x-data="deleteWidget">
@@ -24,19 +26,15 @@ class DeleteColumnWidget extends Component
         </div>';
     }
 
-
     /**
-     * Execute deleteing
+     * Execute deleting.
+     * When button is clicked, emit event to parent component.
+     * A callback cannot be stored as public property of a livewire component, so we must
+     * forward call to parent that will retrieve the callback from columns configuration.
      */
     public function delete()
     {
-        $handler = app()->make(HandlerDeleteInterface::class, [
-            'function_code' => $this->functionCode
-        ]);
-
-        $handler->deleteItem([], $this->model);
-
-        // refresh parent table
-        $this->emitUp('refresh');
+        // notify parent table to execute deleting for this row
+        $this->emitUp('columnDeleting', $this->attribute, $this->model->getAttribute('id'));
     }
 }

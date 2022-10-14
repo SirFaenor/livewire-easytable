@@ -86,7 +86,10 @@ class Column
      */
     final public function __construct(string $attribute = null, array $config = [])
     {
-        $this->attribute = $attribute;
+        if($attribute) {
+            $this->attribute = $attribute;
+        }
+
         $this->config = $config;
     }
 
@@ -265,7 +268,7 @@ class Column
 
 
     /**
-     * Sets the column as editable and stores a callback to be used to update
+     * Sets the column as live editable and stores a callback to be used to update
      * the model.
      * @param callable $editableCallback closure to be used to update the model
      * @param string $inputType input|textarea
