@@ -20,6 +20,11 @@ You can install the package via composer:
 ```bash
 composer require sirfaenor/livewire-easytable
 ```
+You can publish configuration and view via commands
+```bash
+php artisan vendor:publish --tag=leasytable-config
+php artisan vendor:publish --tag=leasytable-views
+```
 
 ## Usage
 - creare un componente che estenda Sirfaenor\Leasytable\Http\Livewire\Table
@@ -27,6 +32,8 @@ composer require sirfaenor/livewire-easytable
 ### Configurazione tabella
 
 E' possibile agire sulle seguenti properietà del componente per personalizzare la tabella:
+
+- `$pageSize` numero di record per pagina specifico per la tabella. Di default viene presa la chiave di configurazione impostata in `pagesize`
 - `$defaultSortAttribute` per impostare attributo che viene usato per l'ordinamento di default. Deve essere il nome / attributo di una delle colonne configurate
 - `$defaultSortDirection` (asc / desc) per impostare direzione di default per l'ordinamento
 - implementare il metodo query() per ritornare il builder di default che sarà usato per il recupero delle righe, es:
@@ -116,6 +123,7 @@ Questa colonna espone dei metodi aggiuntivi:
 ## Roadmap
 - [ ] traduzione del readme
 - [ ] eliminazione residui di features di Marvin
+- [ ] decoupling da uikit
 
 ## Testing
 
