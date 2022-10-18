@@ -119,6 +119,10 @@ Questa colonna espone dei metodi aggiuntivi:
 | single()   | Imposta lo switch come singolo. Se un modello ha l'attributo impostato a 'Y', tutti gli altri verranno impostati su 'N' | -         |      |
 | multiple() | Imposta lo switch come multipli. Possono coesistere modelli multipli con l'attributo impostato a 'Y'. | -         |      |
 
+### Modalità di ordinamento
+La classe Table espone un metodo `orderingModeToggle` che consente di attivare / disattivare la modalità di ordinamento per le righe.
+Quando la modalità di ordinamento viene attivata, prima di eseguire il render viene chiamato il metodo `checkOrderingMode` che controlla se la modalità di ordinamento è disponibile. Il metodo deve ritornare una stringa vuota se l'ordinamento è disponibile, o una stringa contenente il messaggio di errore se l'ordinamento è bloccato. 
+Sovrascrivere il metodo in ciascuna tabella per imporre condizioni specifiche (v. ad esempio la funzione demo "Product", che verifica la presenza di un filtro sulla categoria).
 
 ## Roadmap
 - [ ] traduzione del readme
