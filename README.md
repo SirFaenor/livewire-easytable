@@ -84,6 +84,10 @@ Metodi disponibili (tutti i metodi ritornano l'istanza e sono quindi concatenabi
 | classes(string $classes)                                     | Add custom classes to `<td>` tag                             | string $classes list of classes                              |         |
 | showInOrderList()                                            | Set the column to be shown in order list                     | -                                                            |         |
 
+##### Note su ordinamento, ricerca e filtri
+Quando si agisce su una colonna "sortable", "searchable" o "filterable", la query stringa viene aggiornata e lo stato viene memorizzato; quando si ritorna successivamente all'url (dove il componente viene montato) lo stato viene ripristinato. 
+Per resettare lo stato memorizzato, è possibile impostare forzatamente sull'url il parametro `state=0`.
+
 #### EditColumn
 Mostra icona di edit sulla riga.
 

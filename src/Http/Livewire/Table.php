@@ -6,6 +6,7 @@ namespace Sirfaenor\Leasytable\Http\Livewire;
 
 use Exception;
 use Livewire\Component;
+use Illuminate\Http\Request;
 use Livewire\WithPagination;
 use Sirfaenor\Leasytable\Column;
 use Illuminate\Database\Eloquent\Model;
@@ -148,6 +149,17 @@ abstract class Table extends Component
          */
         if (session()->has($this->functionCode.'.state')) {
             $this->state = session($this->functionCode.'.state');
+        }
+
+        /**
+         * State in request overwrites session.
+         * If request has state=0, reset state.
+         */
+        $requestState = request()->state;
+        if (is_array($requestState)) {
+            $this->state = $requestState;
+        } elseif ((string)$requestState === "0") {
+            $this->state = [];
         }
 
         /**
