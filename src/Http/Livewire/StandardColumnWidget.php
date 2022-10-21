@@ -14,7 +14,7 @@ class StandardColumnWidget extends Component
     /**
      * value of the cell
      */
-    public string $content;
+    public ?string $content;
 
     /**
      * Attribute (name) of the column
