@@ -226,10 +226,16 @@ abstract class Table extends Component
         //     $filters = [];
         // }
 
-        // output search
-        $showSearch = count(array_filter($this->columns(), fn ($column) => $column->searchable === true)) > 0;
+        // output search (if there are searchable columns)
+        $showSearch = false;
+        $searchableColumns = array_filter($this->columns(), fn ($column) => $column->searchable === true);
+        $showSearch = count($searchableColumns) > 0;
 
-        return view('leasytable::datatable', compact('rows', 'columns', 'filters', 'orderAlert', 'showSearch'));
+        // build search label (get heading from each searchable column)
+        $searchLabel = implode(', ', array_map(fn ($column) => $column->heading, $searchableColumns));
+
+
+        return view('leasytable::datatable', compact('rows', 'columns', 'filters', 'orderAlert', 'showSearch', 'searchLabel'));
     }
 
 
