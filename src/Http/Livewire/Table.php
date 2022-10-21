@@ -38,6 +38,7 @@ abstract class Table extends Component
         'columnEdited',
         'columnCopying',
         'columnDeleting',
+        'restoreState'
     ];
 
 
@@ -140,9 +141,29 @@ abstract class Table extends Component
      */
     public function mount()
     {
+        $this->restoreState();
+
         $this->totalRowsCount = count($this->loadRows(false));
 
         $this->pageSize = $this->pageSize ?: config('leasytable.pagesize');
+    }
+
+
+    /**
+     * Restore internal state base on different criteria.
+     * It is used on mount and it is also a listener from javascript to force restoring of a state
+     * @param array $forceOverwrite state to force restoring from
+     */
+    public function restoreState(array $forceOverwrite = [])
+    {
+        /**
+         * Clean all previous state
+         */
+        $this->state = [];
+        $this->activeFilters = [];
+        $this->sortAttribute = null;
+        $this->sortDirection = null;
+        $this->search = '';
 
         /**
          * Restore state from session
@@ -162,15 +183,29 @@ abstract class Table extends Component
             $this->state = [];
         }
 
+
         /**
-         * Update property to reflect restored state
+         * Overwrite if needed (e.g. from event restoreStateFromUrl)
+         */
+        if (count($forceOverwrite)) {
+            $this->state = $forceOverwrite;
+        }
+
+
+        /**
+         * Now state is set, so we're going to
+         * update properties in order to reflect restored state
          */
         if (isset($this->state['filter'])) {
             foreach ($this->state['filter'] as $property => $value) {
+                if ($value === null) {
+                    continue;
+                }
                 $this->activeFilters[$property] = $value;
             }
         }
-        if (isset($this->state['sorting'])) {
+
+        if (isset($this->state['sorting']) && strlen($this->state['sorting'])) {
             $values = explode("|", $this->state['sorting']);
             $this->sortAttribute = $values[0];
             $this->sortDirection = $values[1];
@@ -181,7 +216,6 @@ abstract class Table extends Component
     }
 
 
-
     /**
      * Save state to session in order to restore it later
      */
@@ -189,7 +223,6 @@ abstract class Table extends Component
     {
         session()->put($this->functionCode.'.state', $this->state);
     }
-
 
 
     /**
@@ -308,6 +341,7 @@ abstract class Table extends Component
 
         // get files and sort with folders first
         $rows = $paginate ? $query->paginate($this->pageSize) : $query->get();
+        //Log::info("query log", DB::getQueryLog());
 
         $this->currentPageIds = $paginate ? array_column($rows->items(), 'id') : array_column($rows->all(), 'id');
 
@@ -368,6 +402,8 @@ abstract class Table extends Component
         // store sorting state
         if ($this->sortAttribute) {
             $this->state['sorting'] = $this->sortAttribute.'|'.$this->sortDirection;
+        } else {
+            $this->state['sorting'] = '';
         }
 
         // save state
@@ -380,8 +416,7 @@ abstract class Table extends Component
      */
     protected function resetSorting()
     {
-        $this->sortAttribute = null;
-        $this->sortDirection = null;
+        $this->sort('');
     }
 
 
