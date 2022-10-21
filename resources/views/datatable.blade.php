@@ -6,25 +6,27 @@
         )
         <div class="uk-grid uk-flex-middle uk-margin-top uk-margin-bottom uk-grid-small" uk-grid>
             @foreach ($filters as $column)
-            <div class="uk-width-1-3@m page-content-filterbar-item">
-                <label class="uk-form-label uk-text-nowrap">Filtra per {{ $column->filterLabel }}</label>
-                <select class="uk-select" name="{{ $column->attribute }}" wire:change="updateFilter('{{$column->attribute}}', $event.target.value)">
-                    <option value="" @selected(!isset($activeFilters[$column->attribute]) || strlen($activeFilters[$column->attribute]) == 0)>-</option>
-                    @foreach ($column->filterOptions as $value => $label)
-                        <option value="{{ $value }}" @if(isset($activeFilters[$column->attribute]) && (string)$value == (string)$activeFilters[$column->attribute]) selected @endif>{{ $label}}</option>
-                    @endforeach
-                </select>
+            <div class="uk-width-1-3@m">
+                <div class=" page-content-filterbar-item">
+                    <label class="uk-form-label uk-text-nowrap">Filtra per {{ $column->filterLabel }}</label>
+                    <select class="uk-select" name="{{ $column->attribute }}" wire:change="updateFilter('{{$column->attribute}}', $event.target.value)">
+                        <option value="" @selected(!isset($activeFilters[$column->attribute]) || strlen($activeFilters[$column->attribute]) == 0)>-</option>
+                        @foreach ($column->filterOptions as $value => $label)
+                            <option value="{{ $value }}" @if(isset($activeFilters[$column->attribute]) && (string)$value == (string)$activeFilters[$column->attribute]) selected @endif>{{ $label}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             @endforeach
 
             @if($orderingMode === false && $showSearch === true)
-            <div class="uk-width-1-3@m page-content-filterbar-item">
-                <div class="uk-width-1-1">    
+            <div class="uk-width-1-3@m">
+                <div class="uk-width-1-1 page-content-filterbar-item">    
                     <div>
                         <label class="uk-form-label uk-text-nowrap">Cerca ({{$searchLabel}})</label>
 
                         <div class="uk-flex uk-flex-middle">
-                            <input type="search" class="uk-width-expand uk-input uk-text-small" placeholder="" wire:model="search">
+                            <input type="search" class="uk-width-expand uk-input uk-text-small" placeholder="" wire:model.debounce.500ms="search">
                             @if(strlen($search))
                             <a class="uk-form-label uk-margin-small-left uk-text-nowrap" wire:click.prevent="$set('search', '')"><i class="mvi mvi-close" title="Clear"></i></a>
                             @endif
@@ -61,7 +63,7 @@
                         @if ($column->sortable)
                             wire:click="sort('{{$column}}')"
                         @endif
-                        data-sortattribute="{{$sortAttribute}}"
+                        data-current-sortattribute="{{$sortAttribute}}"
                         data-attribute="{{$column->attribute}}"
                     >
 
