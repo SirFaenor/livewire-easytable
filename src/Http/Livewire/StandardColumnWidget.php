@@ -57,7 +57,7 @@ class StandardColumnWidget extends Component
             switch ($this->editableInput) {
                 case 'input':
 
-                    $this->content = '<input wire:loading.delay.attr="disabled" wire:loading.delay.class="loading" class="uk-input" type="text" wire:model.lazy="value" value="'.$this->content.'" /></span>';
+                    $this->content = '<input wire:loading.delay.attr="disabled" class="uk-input" type="text" wire:model.lazy="value" />';
 
                     break;
 
