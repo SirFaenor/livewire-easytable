@@ -318,8 +318,9 @@ abstract class Table extends Component
             $query->orderBy($this->defaultSortAttribute, $this->defaultSortDirection);
         }
 
-        // in order mode, force position
+        // in order mode, force position and disable ordering
         if ($this->orderingMode) {
+            $paginate = false;
             $query->reorder()->orderBy('position', 'asc');
         }
 
