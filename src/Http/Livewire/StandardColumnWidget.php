@@ -43,6 +43,11 @@ class StandardColumnWidget extends Component
     public $value;
 
     /**
+     * Placeholder
+     */
+    public string $placeholder;
+
+    /**
      * Store content in the property
      */
     public function mount()
@@ -57,13 +62,13 @@ class StandardColumnWidget extends Component
             switch ($this->editableInput) {
                 case 'input':
 
-                    $this->content = '<input wire:loading.delay.attr="disabled" class="uk-input" type="text" wire:model.lazy="value" />';
+                    $this->content = '<input wire:loading.delay.attr="disabled" class="uk-input" type="text" wire:model.lazy="value" placeholder="'.$this->placeholder.'" />';
 
                     break;
 
                 case 'textarea':
 
-                    $this->content = '<textarea wire:loading.delay.attr="disabled" wire:loading.delay.class="loading" rows="5" class="uk-textarea" wire:model.lazy="value">'.$this->content.'</textarea>';
+                    $this->content = '<textarea wire:loading.delay.attr="disabled" wire:loading.delay.class="loading" rows="5" class="uk-textarea" wire:model.lazy="value" placeholder="'.$this->placeholder.'">'.$this->content.'</textarea>';
 
                     break;
 

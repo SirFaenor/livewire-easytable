@@ -71,6 +71,13 @@ class Column
 
 
     /**
+     * Placeholder for editable columns
+     * @var string
+     */
+    protected ?string $placeholder = null;
+
+
+    /**
      * Static utility for constructor
      */
     public static function make(string $attribute = null, array $config = [])
@@ -284,6 +291,21 @@ class Column
 
 
     /**
+     * Sets a placeholder on an editable column
+     * @param string $placeholder if null, column title will be used
+     */
+    public function placeholder(string $placeholder = null): self
+    {
+        if(!$this->editableCallback) {
+            throw new Exception("Column [$this->attribute] is not editable, cannot assign placeholder");
+        }
+        $this->placeholder = strlen((string) $placeholder) ? $placeholder : $this->heading;
+
+        return $this;
+    }
+
+
+    /**
      * Execute the callback when column is edited.
      */
     public function edit(Model $model, $value)
@@ -325,6 +347,7 @@ class Column
             'editableInput' => $this->editableInput,
             'attribute' => $this->attribute,
             'model' => $model,
+            'placeholder' => $this->placeholder ?: '',
         ])->html();
     }
 
