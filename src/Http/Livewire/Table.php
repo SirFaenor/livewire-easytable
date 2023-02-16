@@ -592,8 +592,14 @@ abstract class Table extends Component
         $column = $this->getColumnByAttribute($attribute);
 
         $model = $this->query()->getModel()->findOrFail($modelId);
+        
+        // ensure that 'functionCode' exists in column's configuration
+        $columnConfig = $column->config;
+        if(!array_key_exists('functionCode', $columnConfig)) {
+            $columnConfig['functionCode'] = $this->functionCode;
+        }
 
-        call_user_func($column->getCopyCallback(), $model, $column->config);
+        call_user_func($column->getCopyCallback(), $model, $columnConfig);
 
         $this->emit('refresh');
     }
@@ -611,7 +617,13 @@ abstract class Table extends Component
 
         $model = $this->query()->getModel()->findOrFail($modelId);
 
-        call_user_func($column->getDeleteCallback(), $model, $column->config);
+        // ensure that 'functionCode' exists in column's configuration
+        $columnConfig = $column->config;
+        if(!array_key_exists('functionCode', $columnConfig)) {
+            $columnConfig['functionCode'] = $this->functionCode;
+        }
+
+        call_user_func($column->getDeleteCallback(), $model, $columnConfig);
 
         $this->emit('refresh');
     }
