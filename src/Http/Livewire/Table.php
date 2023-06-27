@@ -198,7 +198,7 @@ abstract class Table extends Component
          */
         if (isset($this->state['filter'])) {
             foreach ($this->state['filter'] as $property => $value) {
-                if ($value === null) {
+                if ($value === null || !strlen((string)$value)) {
                     continue;
                 }
                 $this->activeFilters[$property] = $value;
@@ -592,7 +592,7 @@ abstract class Table extends Component
         $column = $this->getColumnByAttribute($attribute);
 
         $model = $this->query()->getModel()->findOrFail($modelId);
-        
+
         // ensure that 'functionCode' exists in column's configuration
         $columnConfig = $column->config;
         if(!array_key_exists('functionCode', $columnConfig)) {
