@@ -179,8 +179,10 @@ abstract class Table extends Component
         $requestState = request()->state;
         if (is_array($requestState)) {
             $this->state = $requestState;
+            $this->saveState('');
         } elseif ((string)$requestState === "0") {
             $this->state = [];
+            $this->saveState('');
         }
 
 
@@ -491,14 +493,17 @@ abstract class Table extends Component
         // reset search
         $this->resetSearch();
 
-        // store new state
-        $this->state['filter'][$attribute] = $value;
 
         // if value is null, reset this filter
         if (!strlen((string)$value)) {
             unset($this->activeFilters[$attribute]);
+            unset($this->state['filter'][$attribute]);
+            $this->saveState('updateFilter');
             return;
         }
+
+        // store new state
+        $this->state['filter'][$attribute] = $value;
 
         $this->activeFilters[$attribute] = $value;
 
