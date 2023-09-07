@@ -12,7 +12,9 @@
                     <select class="uk-select" name="{{ $column->attribute }}" wire:change="updateFilter('{{$column->attribute}}', $event.target.value)">
                         <option value="" @selected(!isset($activeFilters[$column->attribute]) || strlen($activeFilters[$column->attribute]) == 0)>-</option>
                         @foreach ($column->filterOptions as $value => $label)
-                            <option value="{{ $value }}" @if(isset($activeFilters[$column->attribute]) && (string)$value == (string)$activeFilters[$column->attribute]) selected @endif>{{ $label}}</option>
+                            <option value="{{ $value }}" @if(isset($activeFilters[$column->attribute]) && (string)$value == (string)$activeFilters[$column->attribute]) selected @endif
+                                @disabled(in_array($value, $column->disabledFilterOptions))
+                                >{{ $label}}</option>
                         @endforeach
                     </select>
                 </div>

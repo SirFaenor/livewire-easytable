@@ -37,6 +37,7 @@ class Column
     protected string $filterLabel = '';
     protected ?array $filterOptions = null;
     protected $filterCallback = null;
+    public array $disabledFilterOptions = [];
 
 
     /**
@@ -243,6 +244,18 @@ class Column
         foreach ($options as $item) {
             $this->filterOptions[call_user_func($valueCallback, $item)] = call_user_func($labelCallback, $item);
         }
+
+        return $this;
+    }
+
+
+    /**
+     * Disable some values from filter options.
+     * Values must match those returned by $valueCallback argument of filterable() method
+     */
+    public function disable(array $values)
+    {
+        $this->disabledFilterOptions = $values;
 
         return $this;
     }
