@@ -630,6 +630,5 @@ abstract class Table extends Component
 
         call_user_func($column->getDeleteCallback(), $model, $columnConfig);
 
-        $this->emit('refresh');
     }
 }
