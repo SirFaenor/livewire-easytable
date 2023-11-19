@@ -4,7 +4,7 @@
             count($filters) || 
             ($orderingMode === false && $showSearch === true)    
         )
-        <div class="uk-grid uk-flex-middle uk-margin-top uk-margin-bottom uk-grid-small" uk-grid>
+        <div class="uk-grid uk-flex-middle uk-margin-top uk-margin-bottom uk-grid-medium" uk-grid>
             @foreach ($filters as $column)
             <div class="uk-width-1-3@m">
                 <div class=" page-content-filterbar-item">
@@ -36,6 +36,20 @@
                     </div>
                 </div>
             </div>
+            @endif
+
+            @if($actions)
+                @foreach($actions as $action)
+                <div class="uk-width-1-3@m">
+                    
+                    <div class="uk-width-1-1 page-content-filterbar-item"> 
+                        <label class="uk-form-label uk-text-nowrap">&nbsp;</label>
+                        <div>
+                        {!! $action !!}
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             @endif
             
         </div>{{-- grid --}}

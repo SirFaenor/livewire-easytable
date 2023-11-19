@@ -130,6 +130,11 @@ abstract class Table extends Component
     public $state;
 
     /**
+     * List of actions button to show on table heading (with search and filters)
+     */
+    public array $actions = [];
+
+    /**
      * Store state in query string
      */
     protected $queryString = ['state'];

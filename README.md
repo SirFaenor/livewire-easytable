@@ -31,7 +31,7 @@ php artisan vendor:publish --tag=leasytable-views
 - includere il componente livewire dove desiderato
 ### Configurazione tabella
 
-E' possibile agire sulle seguenti properietà del componente per personalizzare la tabella:
+E' possibile agire sulle seguenti proprietà del componente per personalizzare la tabella:
 
 - `$pageSize` numero di record per pagina specifico per la tabella. Di default viene presa la chiave di configurazione impostata in `pagesize`
 - `$defaultSortAttribute` per impostare attributo che viene usato per l'ordinamento di default. Deve essere il nome / attributo di una delle colonne configurate
@@ -127,6 +127,17 @@ Questa colonna espone dei metodi aggiuntivi:
 La classe Table espone un metodo `orderingModeToggle` che consente di attivare / disattivare la modalità di ordinamento per le righe.
 Quando la modalità di ordinamento viene attivata, prima di eseguire il render viene chiamato il metodo `checkOrderingMode` che controlla se la modalità di ordinamento è disponibile. Il metodo deve ritornare una stringa vuota se l'ordinamento è disponibile, o una stringa contenente il messaggio di errore se l'ordinamento è bloccato. 
 Sovrascrivere il metodo in ciascuna tabella per imporre condizioni specifiche (v. ad esempio la funzione demo "Product", che verifica la presenza di un filtro sulla categoria).
+
+### Pulsanti aggiuntivi
+Per aggiungere pulsanti all'intestazione della tabella, passare il parametro `actions` in fase di inizializzazione del componente.
+Esempio
+```html
+@livewire("customer::datatable", [
+    'actions' => [
+        '<a class="uk-button uk-button-primary">Esporta elenco</a>',
+    ]
+])
+```
 
 ## Roadmap
 - [ ] traduzione del readme
