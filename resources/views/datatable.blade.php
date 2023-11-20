@@ -2,7 +2,8 @@
     <div>
         @if(
             count($filters) || 
-            ($orderingMode === false && $showSearch === true)    
+            ($orderingMode === false && $showSearch === true) ||
+            count($actions)
         )
         <div class="uk-grid uk-flex-middle uk-margin-top uk-margin-bottom uk-grid-medium" uk-grid>
             @foreach ($filters as $column)
