@@ -361,7 +361,7 @@ class Column
             'attribute' => $this->attribute,
             'model' => $model,
             'placeholder' => $this->placeholder ?: '',
-        ])->html();
+        ]);
     }
 
 
