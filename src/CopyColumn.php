@@ -43,7 +43,7 @@ class CopyColumn extends Column
             'model' => $model,
             'heading' => $this->heading,
             'attribute' => $this->attribute,
-        ])->html();
+        ]);
     }
 
     /**

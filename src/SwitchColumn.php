@@ -45,6 +45,6 @@ class SwitchColumn extends Column
             'model' => $model,
             'attribute' => $this->attribute,
             'type' => $this->type,
-        ])->html();
+        ]);
     }
 }
