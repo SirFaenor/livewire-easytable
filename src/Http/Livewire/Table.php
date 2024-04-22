@@ -139,6 +139,11 @@ abstract class Table extends Component
      */
     protected $queryString = ['state'];
 
+    /**
+     * Current page
+     */
+    protected int $page = 1;
+
 
     /**
      * Mount
@@ -241,7 +246,7 @@ abstract class Table extends Component
         $rows = $this->loadRows();
 
         // se non files, torno a pagina 1
-        if ($rows->isEmpty() && $this->getPage() > 1) {
+        if ($rows->isEmpty() && $this->page > 1) {
             $this->gotoPage(1);
             $rows = $this->loadRows();
         }
@@ -544,7 +549,7 @@ abstract class Table extends Component
         }
 
         // notify frontend
-        $this->emit('orderingModeChange', $this->orderingMode);
+        $this->dispatch('orderingModeChange', status: $this->orderingMode);
 
         return;
     }
@@ -559,7 +564,7 @@ abstract class Table extends Component
             $this->query()->findOrFail($id)->forceFill(['position' => $position])->save();
         }
 
-        $this->dispatchBrowserEvent('updatedPositions');
+        $this->dispatch('updatedPositions');
     }
 
 
@@ -611,7 +616,7 @@ abstract class Table extends Component
 
         call_user_func($column->getCopyCallback(), $model, $columnConfig);
 
-        $this->emit('refresh');
+        $this->dispatch('refresh');
     }
 
     /**

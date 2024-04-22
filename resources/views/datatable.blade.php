@@ -29,7 +29,7 @@
                         <label class="uk-form-label uk-text-nowrap">Cerca ({{$searchLabel}})</label>
 
                         <div class="uk-flex uk-flex-middle">
-                            <input type="search" class="uk-width-expand uk-input uk-text-small" placeholder="" wire:model.debounce.500ms="search">
+                            <input type="search" class="uk-width-expand uk-input uk-text-small" placeholder="" wire:model.live.debounce.500ms="search">
                             @if(strlen($search))
                             <a class="uk-form-label uk-margin-small-left uk-text-nowrap" wire:click.prevent="$set('search', '')"><i class="mvi mvi-close" title="Clear"></i></a>
                             @endif
