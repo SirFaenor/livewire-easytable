@@ -44,7 +44,7 @@ class DeleteColumn extends Column
         return Livewire::mount('leasytable::delete_column_widget', [
             'model' => $model,
             'attribute' => $this->attribute,
-        ])->html();
+        ]);
     }
 
     /**

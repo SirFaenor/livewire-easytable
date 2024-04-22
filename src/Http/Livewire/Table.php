@@ -241,7 +241,7 @@ abstract class Table extends Component
         $rows = $this->loadRows();
 
         // se non files, torno a pagina 1
-        if ($rows->isEmpty() && $this->page > 1) {
+        if ($rows->isEmpty() && $this->getPage() > 1) {
             $this->gotoPage(1);
             $rows = $this->loadRows();
         }
