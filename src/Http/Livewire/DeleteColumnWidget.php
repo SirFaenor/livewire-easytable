@@ -35,6 +35,6 @@ class DeleteColumnWidget extends Component
     public function delete()
     {
         // notify parent table to execute deleting for this row
-        $this->emitUp('columnDeleting', $this->attribute, $this->model->getAttribute('id'));
+        $this->dispatch('columnDeleting', $this->attribute, $this->model->getAttribute('id'));
     }
 }
