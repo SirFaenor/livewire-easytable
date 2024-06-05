@@ -35,6 +35,6 @@ class CopyColumnWidget extends Component
     public function copy()
     {
         // get stored callback and execute it
-        $this->emitUp('columnCopying', $this->attribute, $this->model->getAttribute('id'));
+        $this->dispatch('columnCopying', $this->attribute, $this->model->getAttribute('id'));
     }
 }

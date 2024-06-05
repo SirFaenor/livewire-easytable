@@ -90,6 +90,6 @@ class StandardColumnWidget extends Component
      */
     public function updatedValue()
     {
-        return $this->emitUp('columnEdited', $this->attribute, $this->value, $this->model->getAttribute('id'));
+        return $this->dispatch('columnEdited', $this->attribute, $this->value, $this->model->getAttribute('id'));
     }
 }

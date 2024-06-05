@@ -72,7 +72,7 @@ class SwitchColumnWidget extends Component
                 $column => "N"
             ]);
 
-            $this->emitUp('refresh');
+            $this->dispatch('refresh');
         }
     }
 }
