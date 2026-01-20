@@ -81,7 +81,7 @@ class Column
     /**
      * Static utility for constructor
      */
-    public static function make(string $attribute = null, array $config = [])
+    public static function make(?string $attribute = null, array $config = [])
     {
         $column = new static($attribute, $config);
 
@@ -89,10 +89,10 @@ class Column
     }
 
     /**
-     * @param string $attribute column name and model attribute
+     * @param string|null $attribute column name and model attribute
      * @param array $config extra parameters for specific column types
      */
-    final public function __construct(string $attribute = null, array $config = [])
+    final public function __construct(?string $attribute = null, array $config = [])
     {
         if($attribute) {
             $this->attribute = $attribute;
@@ -145,7 +145,7 @@ class Column
      * Sets a columns as searchable and store a callback
      * to modify query builder
      */
-    public function searchable(callable $callback = null)
+    public function searchable(?callable $callback = null)
     {
         $this->searchable = true;
 
@@ -158,7 +158,7 @@ class Column
     /**
      * Modify query builder to search.
      */
-    public function search(Builder $query, string $search = null)
+    public function search(Builder $query, ?string $search = null)
     {
         if (!$this->searchable) {
             return $query;
@@ -176,7 +176,7 @@ class Column
      * Sets a columns as sortable and store a callback
      * to modify query builder
      */
-    public function sortable(callable $callback = null)
+    public function sortable(?callable $callback = null)
     {
         $this->sortable = true;
 
@@ -208,7 +208,7 @@ class Column
      * Controlla se l'ordinamento è attivo per il dato attributo e restituisce l'html
      * corrispondente
      */
-    public function sortIcon(string $attribute = null, string $direction = null): string
+    public function sortIcon(?string $attribute = null, ?string $direction = null): string
     {
         if (!$this->sortable) {
             return '';
@@ -305,9 +305,9 @@ class Column
 
     /**
      * Sets a placeholder on an editable column
-     * @param string $placeholder if null, column title will be used
+     * @param string|null $placeholder if null, column title will be used
      */
-    public function placeholder(string $placeholder = null): self
+    public function placeholder(?string $placeholder = null): self
     {
         if(!$this->editableCallback) {
             throw new Exception("Column [$this->attribute] is not editable, cannot assign placeholder");
