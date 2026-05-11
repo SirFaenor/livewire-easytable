@@ -60,6 +60,13 @@ class Column
 
 
     /**
+     * Controls column visibility.
+     * true/false = always hide/show; callable = evaluated per row (receives Model, returns bool).
+     */
+    protected mixed $hidden = false;
+
+
+    /**
      * Flag to show the column in ordering mode
      */
     protected $showInOrderList = false;
@@ -391,5 +398,33 @@ class Column
         $this->showInOrderList = true;
 
         return $this;
+    }
+
+
+    /**
+     * Hide this column.
+     * Accepts a bool or a closure(Model): bool evaluated per row.
+     * When a closure is used, the column header is always shown; only the cell
+     * content is suppressed for rows where the closure returns true.
+     */
+    public function hidden(mixed $hidden): self
+    {
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+
+
+    /**
+     * Return whether this column should be hidden.
+     * When $model is null (header/column-level check), closures return false.
+     */
+    public function isHidden(?Model $model = null): bool
+    {
+        if (is_callable($this->hidden)) {
+            return $model !== null && (bool) call_user_func($this->hidden, $model);
+        }
+
+        return (bool) $this->hidden;
     }
 }

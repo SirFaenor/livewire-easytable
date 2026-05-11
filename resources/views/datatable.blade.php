@@ -95,7 +95,9 @@
                 <tr>
                     @foreach($columns as $column)
                     <td class="{{ $column->classes }}">
-                        {!! $column->output($item, $functionCode, $orderingMode) !!}
+                        @unless($column->isHidden($item))
+                            {!! $column->output($item, $functionCode, $orderingMode) !!}
+                        @endunless
                     </td>
                     @endforeach
                 </tr>

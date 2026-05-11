@@ -250,7 +250,7 @@ abstract class Table extends Component
             $this->gotoPage(1);
             $rows = $this->loadRows();
         }
-        $columns = $this->columns();
+        $columns = array_values(array_filter($this->columns(), fn ($col) => !$col->isHidden()));
 
         $orderAlert = '';
         if ($this->orderingMode === true) {
